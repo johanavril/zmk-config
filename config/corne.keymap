@@ -1,0 +1,153 @@
+/*
+ * Copyright (c) 2020 The ZMK Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/zmk/mouse.h>
+
+/* Homerow mods */
+#define HRML(k1,k2,k3,k4) &ht LGUI k1  &ht LALT k2  &ht LCTRL k3  &ht LSHFT k4
+#define HRMR(k1,k2,k3,k4) &ht RSHFT k1  &ht RCTRL k2  &ht RALT k3  &ht RGUI k4
+
+&mmv_input_listener { input-processors = <&zip_xy_scaler 2 1>; };
+
+&msc_input_listener { input-processors = <&zip_scroll_scaler 2 1>; };
+
+&msc {
+    acceleration-exponent = <1>;      // 0
+    time-to-max-speed-ms = <100>;       // 300
+    delay-ms = <0>;                   // 0
+};
+
+&mmv {
+    time-to-max-speed-ms = <500>;
+    acceleration-exponent = <1>;
+    trigger-period-ms = <16>;
+};
+
+/ {
+    behaviors {
+        ht: hold_tap {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <220>;
+            quick-tap-ms = <150>;
+            require-prior-idle-ms = <100>;
+            bindings = <&kp>, <&kp>;
+        };
+    };
+
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+        tri_layer {
+            if-layers = <1 2>;
+            then-layer = <3>;
+        };
+    };
+
+    scroll_encoder: scroll_encoder {
+        compatible = "zmk,behavior-sensor-rotate";
+        #sensor-binding-cells = <0>;
+        bindings = <&msc SCRL_DOWN>, <&msc SCRL_UP>;
+
+        tap-ms = <100>;
+    };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        // ============================================================================
+        // COLEMAK-DH BASE LAYER (42 keys)
+        // ============================================================================
+        default_layer {
+            display-name = "COLEMAK-DH";
+            binding = <
+        //╭──────────┬──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│  TAB     │  Q       │  W       │  F       │  P       │  B       │   │          │          │ MOVE_UP  │          │   │  J       │  L       │  U       │  Y       │ ; :      │  BSPC    │
+            &kp TAB    &kp Q      &kp W      &kp F      &kp P      &kp B                                &mmv MOVE_UP              &kp J      &kp L      &kp U      &kp Y      &kp SEMI   &kp BSPC
+        //├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┤   ├──────────├──────────├──────────┼──────────┼──────────┼──────────┤
+        //│  ESC     │  A       │  R       │  S       │  T       │  G       │   │          │MOVE_LEFT │ L_CLICK  │MOVE_RIGHT│   │  M       │  N       │  E       │  I       │  O       │  ENTER   │
+            &kp ESC    HRML(A,        R,         S,         T)     &kp G                   &mmv MOVE_LEFT &mkp LCLK &mmv MOVE_RIGHT &kp M    &HRMR(N,        E,         I,        O)     &kp ENTER
+        //├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┤   ├──────────├──────────├──────────┼──────────┼──────────┼──────────┤
+        //│  SHIFT   │  Z       │  X       │  C       │  D       │  V       │   │ C_MUTE   │          │MOVE_DOWN │          │      K       │  H       │ , <      │ . >      │ / ?      │ ' "      │
+            &kp LSHFT  &kp Z      &kp X      &kp C      &kp D      &kp V          &kp C_MUTE            &mmv MOVE_DOWN            &kp K      &kp H      &kp COMMA  &kp DOT    &kp FSLH   &kp SQT
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────╯   ├──────────┼──────────┼──────────┴──────────┴──────────┴──────────╯
+                                             &kp LGUI   &mo 1      &kp SPACE                                                      &kp SPACE  &mo 2      &kp RALT
+        //                                 ╰──────────┴──────────┴──────────╯                                                   ╰──────────┴──────────┴──────────╯
+            >;
+            sensor-bindings = <&scroll_encoder>;
+        };
+
+        // ============================================================================
+        // NUMBERS & NAVIGATION LAYER (42 keys)
+        // ============================================================================
+        number_nav_layer {
+            display-name = "NUM/NAV";
+            binding = <
+        //╭──────────┬──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│  F1      │  F2      │  1       │  2       │  3       │ INSERT   │   │          │          │ MOVE_UP  │          │   │  HOME    │ PAGE DN  │ PAGE UP  │  END     │  F7      │  F8      │
+            &kp F1     &kp F2     &kp N1     &kp N2     &kp N3     &kp INS                              &mmv MOVE_UP              &kp HOME   &kp PG_DN  &kp PG_UP  &kp END    &kp F7     &kp F8
+        //├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│  F3      │  F4      │  4       │  5       │  6       │ DELETE   │   │          │MOVE_LEFT │ L_CLICK  │MOVE_RIGHT│   │  LEFT    │  DOWN    │  UP      │  RIGHT   │  F9      │  F10     │
+            &kp F3     &kp F4     &kp N4     &kp N5     &kp N6     &kp DEL                  &mmv MOVE_LEFT &mkp LCLK &mmv MOVE_RIGHT &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT  &kp F9     &kp F10
+        //├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│  F5      │  F6      │  7       │  8       │  9       │  0       │   │ C_MUTE   │          │MOVE_DOWN │          │   │ L_CLICK  │ M_CLICK  │ R_CLICK  │CAPS_WORD │  F11     │  F12     │
+            &kp F5     &kp F6     &kp N7     &kp N8     &kp N9     &kp N0         &kp C_MUTE            &mmv MOVE_DOWN            &mkp LCLK  &mkp MCLK  &mkp RCLK  &caps_word &kp F11    &kp F12
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────╯   ├──────────┼──────────┼──────────┴──────────┴──────────┴──────────╯
+                                             &trans     &trans     &trans                                                          &trans     &trans     &trans
+        //                                 ╰──────────┴──────────┴──────────╯                                                   ╰──────────┴──────────┴──────────╯
+            >;
+            sensor-bindings = <&inc_dec_kp C_BRI_UP C_BRI_DN>;
+        };
+
+        // ============================================================================
+        // SYMBOLS & FUNCTION KEYS LAYER (42 keys)
+        // ============================================================================
+        symbol_layer {
+            display-name = "SYMBOL";
+            binding = <
+        //╭──────────┬──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│          │  !       │  @       │  #       │  $       │          │   │          │          │ MOVE_UP  │          │   │          │  (       │  )       │  [       │  ]       │          │
+           &trans     &kp EXCL   &kp AT     &kp HASH   &kp DLLR   &trans                               &mmv MOVE_UP              &trans     &kp LPAR   &kp RPAR   &kp LBKT   &kp RBKT   &trans
+        //├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│          │  %       │  ^       │  &       │  *       │          │   │          │MOVE_LEFT │ L_CLICK  │MOVE_RIGHT│   │          │  {       │  }       │  \       │  |       │          │
+           &trans     &kp PRCNT  &kp CARET  &kp AMPS   &kp ASTRK  &trans                   &mmv MOVE_LEFT &mkp LCLK &mmv MOVE_RIGHT &trans     &kp LBRC   &kp RBRC   &kp BSLH   &kp PIPE   &trans
+        //├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│          │  `       │  ~       │          │          │          │   │ C_MUTE   │          │MOVE_DOWN │          │   │          │  -       │  _       │  =       │  +       │          │
+           &trans     &kp GRAVE  &kp TILDE  &trans     &trans     &trans         &kp C_MUTE            &mmv MOVE_DOWN            &trans     &kp MINUS  &kp UNDER  &kp EQUAL  &kp PLUS   &trans
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────╯   ├──────────┼──────────┼──────────┴──────────┴──────────┴──────────╯
+                                             &trans     &trans     &trans                                                          &trans     &trans     &trans
+        //                                 ╰──────────┴──────────┴──────────╯                                                   ╰──────────┴──────────┴──────────╯
+            >;
+            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+        };
+
+        // ============================================================================
+        // SYSTEM & BLUETOOTH LAYER (42 keys)
+        // ============================================================================
+        adjust_layer {
+            display-name = "SYSTEM";
+            binding = <
+        //╭──────────┬──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│          │ RESET    │          │          │          │PROFILE 0 │   │          │          │ MOVE_UP  │          │   │PROFILE 1 │PROFILE 2 │PROFILE 3 │PROFILE 4 │  RESET   │          │
+           &trans    &sys_reset  &trans     &trans     &trans    &bt BT_SEL 0                          &mmv MOVE_UP             &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &sys_reset &trans
+        //├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│          │BOOTLOADER│          │          │          │          │   │          │MOVE_LEFT │ L_CLICK  │MOVE_RIGHT│   │ BT PREV  │ BT NEXT  │          │          │BOOTLOADER│          │
+           &trans   &bootloader  &trans     &trans     &trans     &trans                   &mmv MOVE_LEFT &mkp LCLK &mmv MOVE_RIGHT &bt BT_PRV &bt BT_NXT  &trans     &trans    &bootloader &trans
+        //├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│          │          │          │          │ BT CLR   │          │   │ C_MUTE   │          │MOVE_DOWN │          │   │          │ OUT TOG  │ OUT USB  │ OUT BLE  │          │          │
+           &trans     &trans     &trans     &trans    &bt BT_CLR  &trans         &kp C_MUTE            &mmv MOVE_DOWN            &trans    &out OUT_TOG &out OUT_USB &out OUT_BLE &trans   &trans
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────╯   ├──────────┼──────────┼──────────┴──────────┴──────────┴──────────╯
+                                             &trans     &trans     &trans                                                          &trans     &trans     &trans
+        //                                 ╰──────────┴──────────┴──────────╯                                                   ╰──────────┴──────────┴──────────╯
+            >;
+            sensor-bindings = <&scroll_encoder>;
+        };
+    };
+};

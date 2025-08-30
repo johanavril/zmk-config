@@ -1,0 +1,29 @@
+# ============================================================================
+# ZMK Firmware Build Configuration for CRKBD v4.2
+# ============================================================================
+# This file defines what firmware files GitHub Actions will build automatically
+# when you push changes to this repository.
+#
+# Hardware Setup:
+# - Board: nice!nano v2 (nRF52840 microcontroller)
+# - Keyboard: CRKBD (Corne) v4.2 split keyboard
+# - Displays: nice!view e-paper displays (128x32)
+# - Features: RGB underglow, rotary encoders, joystick, Bluetooth
+#
+# Build Output:
+# Each entry below creates a separate .uf2 firmware file that you flash
+# to the corresponding keyboard half or for specific purposes.
+# ============================================================================
+
+# NOTE: This is parsed as strict YAML. Be careful with indentation!
+
+include:
+  - board: eyelash_corne_left
+    shield: nice_view
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_ZMK_STUDIO=y -DCONFIG_ZMK_STUDIO_LOCKING=n
+    artifact-name: eyelash_corne_studio_left
+  - board: eyelash_corne_right
+    shield: nice_view
+  - board: eyelash_corne_left
+    shield: settings_reset

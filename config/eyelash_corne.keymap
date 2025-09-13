@@ -94,7 +94,7 @@
             &trans     &kp N1     &kp N2     &kp N3     &kp EQUAL  &trans                               &mmv MOVE_UP              &kp HOME   &kp END    &kp UP     &kp PG_UP  &kp PG_DN  &trans
         //├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤
         //│          │  4       │  5       │  6       │  - _     │          │   │          │MOVE_LEFT │ L_CLICK  │MOVE_RIGHT│   │CAPS_WORD │  LEFT    │  DOWN    │  RIGHT   │  INSERT  │          │
-            &trans     &ht LSHFT N4 &ht LCTRL N5 &ht LALT N6 &ht LGUI MINUS &trans      &mmv MOVE_LEFT &mkp LCLK &mmv MOVE_RIGHT &caps_word &kp LEFT   &ht RGUI DOWN &ht RALT RIGHT &ht RCTRL INS &trans
+            &trans     &ht LSHFT N4 &ht LCTRL N5 &ht LALT N6 &ht LGUI MINUS &trans      &mmv MOVE_LEFT &mkp LCLK &mmv MOVE_RIGHT &caps_word &ht RGUI LEFT &ht RALT DOWN &ht RCTRL RIGHT &ht RSHFT INS &trans
         //├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤
         //│          │  7       │  8       │  9       │  0       │          │   │ C_MUTE   │          │MOVE_DOWN │          │   │ C_MUTE   │ L_CLICK  │ M_CLICK  │ R_CLICK  │  DELETE  │          │
             &trans     &kp N7     &kp N8     &kp N9     &kp N0     &trans         &kp C_MUTE            &mmv MOVE_DOWN            &kp C_MUTE &mkp LCLK  &mkp MCLK  &mkp RCLK  &kp DEL    &trans

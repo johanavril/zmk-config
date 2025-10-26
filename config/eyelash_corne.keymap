@@ -138,7 +138,7 @@
                                              &trans     &trans     &trans                                                          &trans     &trans     &trans
         //                                 ╰──────────┴──────────┴──────────╯                                                   ╰──────────┴──────────┴──────────╯
             >;
-            sensor-bindings = <&scroll_encoder>;
+            sensor-bindings = <&msc SCRL_UP>, <&msc SCRL_DOWN>
         };
     };
 };

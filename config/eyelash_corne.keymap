@@ -13,7 +13,7 @@
 #include <input/processors.dtsi>
 #include <zephyr/dt-bindings/input/input-event-codes.h>
 
-#define ZMK_MOUSE_SCRL_VAL 140
+#define ZMK_POINTING_DEFAULT_SCRL_VAL 140
 
 &mmv_input_listener { input-processors = <&zip_xy_scaler 2 1>; };
 
@@ -52,7 +52,7 @@
         };
     };
 
-    scroll_encoder: scroll_encoder {
+    scroll_encoder: behavior_sensor_rotate_mouse_wheel_up_down {
         compatible = "zmk,behavior-sensor-rotate";
         #sensor-binding-cells = <0>;
         bindings = <&msc SCRL_DOWN>, <&msc SCRL_UP>;

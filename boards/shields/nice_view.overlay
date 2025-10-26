@@ -1,7 +1,0 @@
-/ {
-    zephyr,user {
-        // Keep the Nice!View always on
-        zmk,display-status-screen-timeout-ms = <0>;
-        zmk,display-sleep = <0>;
-    };
-};
